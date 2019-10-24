@@ -3,12 +3,10 @@ import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class RecipeService {
-  recipeSelected = new EventEmitter<Recipe>();
 
+@Injectable()
+
+export class RecipeService {
 
   private recipes: Recipe[] = [
     new Recipe('Crazy Fries', 'not just tasty but crazy tastey', 'http://blog.fleischerei-freese.de/wp-content/uploads/2008/08/p8222535.JPG', [
