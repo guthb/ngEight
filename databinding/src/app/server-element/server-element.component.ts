@@ -10,7 +10,9 @@ import {
   AfterContentChecked,
   AfterViewInit,
   AfterViewChecked,
-  OnDestroy
+  OnDestroy,
+  ViewChild,
+  ElementRef
 } from '@angular/core';
 
 @Component({
@@ -23,6 +25,7 @@ import {
 export class ServerElementComponent implements OnInit, OnChanges, DoCheck, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy {
   @Input('srvElement') element: { type: string, name: string, content: string };
   @Input() name: string;
+  @ViewChild('heading', { static: true }) header: ElementRef;
 
   constructor() {
     console.log('constructor called!');
@@ -32,11 +35,12 @@ export class ServerElementComponent implements OnInit, OnChanges, DoCheck, After
     //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
     //Add '${implements OnChanges}' to the class.
     console.log('ngOnChanges called!');
-    console.log('changes');
+    console.log(changes);
   }
 
   ngOnInit() {
     console.log('ngOnInit called!');
+    console.log('text Content:' + this.header.nativeElement.textContent)
   }
 
   ngDoCheck() {
@@ -53,6 +57,7 @@ export class ServerElementComponent implements OnInit, OnChanges, DoCheck, After
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit called!');
+    console.log('text Content:' + this.header.nativeElement.textContent)
   }
 
   ngAfterViewChecked() {
