@@ -6,12 +6,17 @@ import { AccountsService } from '../accounts.service';
   selector: 'app-new-account',
   templateUrl: './new-account.component.html',
   styleUrls: ['./new-account.component.css'],
-  providers: [LoggingService]
+  // providers: [LoggingService]
 })
 export class NewAccountComponent {
   //@Output() accountAdded = new EventEmitter<{ name: string, status: string }>();
 
-  constructor(private loggingService: LoggingService, private accountsSerice: AccountsService) { }
+  constructor(private loggingService: LoggingService, private accountsSerice: AccountsService) {
+    this.accountsSerice.statusUpdated.subscribe(
+      (status: string) => alert('New Status: ' + status)
+    );
+
+  }
 
   onCreateAccount(accountName: string, accountStatus: string) {
     // this.accountAdded.emit({
@@ -23,6 +28,6 @@ export class NewAccountComponent {
     // service.logStatusChange(accountStatus)
     //console.log('A server status changed, new status: ' + accountStatus);
     this.accountsSerice.addAccount(accountName, accountStatus);
-    this.loggingService.logStatusChange(accountStatus);
+    // this.loggingService.logStatusChange(accountStatus);
   }
 }
