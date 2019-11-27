@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css']
 })
-export class UserComponent implements OnInit, OnDestroy {
+export class UserComponent implements OnInit {
   user: { id: number, name: string };
   paramsSubscription: Subscription;
 
@@ -27,7 +27,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   //if you add your own obersvables you have to add 
-  ngOnDestroy() {
-    this.paramsSubscription.unsubscribe();
-  }
+  //   ngOnDestroy() {
+  //     this.paramsSubscription.unsubscribe();
+  //   }
+
 }
