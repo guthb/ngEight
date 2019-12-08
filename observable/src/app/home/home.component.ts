@@ -25,13 +25,13 @@ export class HomeComponent implements OnInit, OnDestroy {
         observer.next(count);
         //will count up to two and just stop
         //if (count === 2) {
-        if (count === 5) {
-          observer.complete();
-        }
+        //if (count === 5) {
+        //  observer.complete();
+        //}
         ///if error with observable it just dies, cancels it, nothing else happens
-        if (count > 3) {
-          observer.error(new Error('Count is greater 3!'));
-        }
+        //if (count > 10) {
+        //  observer.error(new Error('Count is greater 3!'));
+        //}
         count++;
       }, 1000)
     });
