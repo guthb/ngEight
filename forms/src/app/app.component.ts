@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -7,21 +7,27 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  @ViewChild('f', { static: false }) signupForm: NgForm;
-  defaultQuestion = 'pet';
-  answer = '';
 
-  suggestUserName() {
-    const suggestedName = 'Superuser';
+  genders = ['male', 'female'];
+  signupForm: FormGroup;
+
+
+
+  ngOnInit() {
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+    this.signupForm = new FormGroup({
+      'userData': new FormGroup({
+        'username': new FormControl(null, Validators.required),
+        'email': new FormControl(null, [Validators.required, Validators.email]),
+      }),
+
+      'gender': new FormControl('male')
+    });
   }
 
-  // onSubmit(form: NgForm) {
-  //   //console.log('Submitted!')
-  //   console.log(form);
-  // }
-
   onSubmit() {
-    console.log(this.signupForm);
+    console.log(this.signupForm)
   }
 
 
