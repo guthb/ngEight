@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { FormGroup, FormControl, Validators, FormArray, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +11,8 @@ export class AppComponent {
   genders = ['male', 'female'];
   signupForm: FormGroup;
   forbiddenUsernames = ['Teddy', "Mona"];
+
+  constructor(private formBuilder: FormBuilder) { }
 
 
   ngOnInit() {
@@ -34,7 +36,6 @@ export class AppComponent {
     const control = new FormControl(null, Validators.required);
     (<FormArray>this.signupForm.get('hobbies')).push(control)
   }
-
 
   forbiddenNames(control: FormControl): { [s: string]: boolean } {
     if (this.forbiddenUsernames.indexOf(control.value) !== -1) {
