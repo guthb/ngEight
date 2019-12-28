@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "filter"
+  name: "filter",
+  pure: false // performace hit pipe run continously
 })
 export class FilterPipe implements PipeTransform {
   transform(value: any, filterString: string, propName: string): any {
