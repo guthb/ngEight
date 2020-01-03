@@ -22,7 +22,7 @@ export class PostsService {
   }
 
   fetchPosts() {
-    this.http
+    return this.http
       .get<{ [key: string]: Post }>(
         'https://http-ng8-lab-a9882.firebaseio.com/posts.json'
       )
@@ -37,7 +37,6 @@ export class PostsService {
           }
           return postsArray;
         })
-      )
-      .subscribe(posts => {});
+      );
   }
 }
