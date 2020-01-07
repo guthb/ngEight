@@ -9,7 +9,7 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <form #postForm=\"ngForm\" (ngSubmit)=\"onCreatePost(postForm.value)\">\n        <div class=\"form-group\">\n          <label for=\"title\">Title</label>\n          <input\n            type=\"text\"\n            class=\"form-control\"\n            id=\"title\"\n            required\n            ngModel\n            name=\"title\"\n          />\n        </div>\n        <div class=\"form-group\">\n          <label for=\"content\">Content</label>\n          <textarea\n            class=\"form-control\"\n            id=\"content\"\n            required\n            ngModel\n            name=\"content\"\n          ></textarea>\n        </div>\n        <button\n          class=\"btn btn-primary\"\n          type=\"submit\"\n          [disabled]=\"!postForm.valid\"\n        >\n          Send Post\n        </button>\n      </form>\n    </div>\n  </div>\n  <hr />\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <button class=\"btn btn-primary\" (click)=\"onFetchPosts()\">\n        Fetch Posts\n      </button>\n      |\n      <button\n        class=\"btn btn-danger\"\n        [disabled]=\"loadedPosts.length < 1\"\n        (click)=\"onClearPosts()\"\n      >\n        Clear Posts\n      </button>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <p *ngIf=\"loadedPosts.length < 1 && !isFetching\">No posts available!</p>\n      <ul class=\"list-group\" *ngIf=\"loadedPosts.length >= 1 && !isFetching\">\n        <li class=\"list-group-item\" *ngFor=\"let post of loadedPosts\">\n          <h3>{{ post.title }}</h3>\n          <p>{{ post.content }}</p>\n        </li>\n      </ul>\n      <p *ngIf=\"isFetching\">Loading</p>\n    </div>\n  </div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <form #postForm=\"ngForm\" (ngSubmit)=\"onCreatePost(postForm.value)\">\n        <div class=\"form-group\">\n          <label for=\"title\">Title</label>\n          <input type=\"text\" class=\"form-control\" id=\"title\" required ngModel name=\"title\" />\n        </div>\n        <div class=\"form-group\">\n          <label for=\"content\">Content</label>\n          <textarea class=\"form-control\" id=\"content\" required ngModel name=\"content\"></textarea>\n        </div>\n        <button class=\"btn btn-primary\" type=\"submit\" [disabled]=\"!postForm.valid\">\n          Send Post\n        </button>\n      </form>\n    </div>\n  </div>\n  <hr />\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <button class=\"btn btn-primary\" (click)=\"onFetchPosts()\">\n        Fetch Posts\n      </button>\n      |\n      <button class=\"btn btn-danger\" [disabled]=\"loadedPosts.length < 1\" (click)=\"onClearPosts()\">\n        Clear Posts\n      </button>\n    </div>\n  </div>\n  <div class=\"row\">\n    <div class=\"col-xs-12 col-md-6 col-md-offset-3\">\n      <p *ngIf=\"loadedPosts.length < 1 && !isFetching\">No posts available!</p>\n      <ul class=\"list-group\" *ngIf=\"loadedPosts.length >= 1 && !isFetching\">\n        <li class=\"list-group-item\" *ngFor=\"let post of loadedPosts\">\n          <h3>{{ post.title }}</h3>\n          <p>{{ post.content }}</p>\n        </li>\n      </ul>\n      <p *ngIf=\"isFetching && !error\">Loading...</p>\n      <div class=\"alert alert-danger\" *ngIf=\"error\">\n        <h1>An Error Occured!</h1>\n        <p>{{ error }}</p>\n      </div>\n    </div>\n  </div>\n</div>");
 
 /***/ }),
 
@@ -302,13 +302,19 @@ var AppComponent = /** @class */ (function () {
         this.postsService = postsService;
         this.loadedPosts = [];
         this.isFetching = false;
+        this.error = null;
     }
     AppComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.errorSub = this.postsService.error.subscribe(function (errorMessage) {
+            _this.error = errorMessage;
+        });
         this.isFetching = true;
         this.postsService.fetchPosts().subscribe(function (posts) {
             _this.isFetching = false;
             _this.loadedPosts = posts;
+        }, function (error) {
+            _this.error = error.message;
         });
     };
     AppComponent.prototype.onCreatePost = function (postData) {
@@ -331,10 +337,20 @@ var AppComponent = /** @class */ (function () {
         this.postsService.fetchPosts().subscribe(function (posts) {
             _this.isFetching = false;
             _this.loadedPosts = posts;
+        }, function (error) {
+            _this.error = error.message;
+            console.log('error response', error);
         });
     };
     AppComponent.prototype.onClearPosts = function () {
+        var _this = this;
         // Send Http request
+        this.postsService.deletePosts().subscribe(function () {
+            _this.loadedPosts = [];
+        });
+    };
+    AppComponent.prototype.ngOnDestroy = function () {
+        this.errorSub.unsubscribe();
     };
     AppComponent.ctorParameters = function () { return [
         { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
@@ -409,6 +425,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm5/index.js");
+
 
 
 
@@ -416,13 +434,17 @@ __webpack_require__.r(__webpack_exports__);
 var PostsService = /** @class */ (function () {
     function PostsService(http) {
         this.http = http;
+        this.error = new rxjs__WEBPACK_IMPORTED_MODULE_4__["Subject"]();
     }
     PostsService.prototype.createAndStorePosts = function (title, content) {
+        var _this = this;
         var postData = { title: title, content: content };
         this.http
             .post('https://http-ng8-lab-a9882.firebaseio.com/posts.json', postData)
             .subscribe(function (responseData) {
             console.log(responseData);
+        }, function (error) {
+            _this.error.next(error.message);
         });
     };
     PostsService.prototype.fetchPosts = function () {
@@ -438,7 +460,13 @@ var PostsService = /** @class */ (function () {
                 }
             }
             return postsArray;
+        }), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(function (errorRes) {
+            // Send some where
+            return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])(errorRes);
         }));
+    };
+    PostsService.prototype.deletePosts = function () {
+        return this.http.delete('https://http-ng8-lab-a9882.firebaseio.com/posts.json');
     };
     PostsService.ctorParameters = function () { return [
         { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
