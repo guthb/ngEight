@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
 import { Post } from './post.model';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
 
 @Injectable({
@@ -17,10 +17,14 @@ export class PostsService {
     this.http
       .post<{ name: string }>(
         'https://http-ng8-lab-a9882.firebaseio.com/posts.json',
-        postData
+        postData,
+        {
+          observe: 'response'
+        }
       )
       .subscribe(responseData => {
-        console.log(responseData);
+        //console.log(responseData);
+        console.log(responseData.body);
       },
         error => {
           this.error.next(error.message);
@@ -59,7 +63,19 @@ export class PostsService {
   }
 
   deletePosts() {
-    return this.http.delete('https://http-ng8-lab-a9882.firebaseio.com/posts.json');
+    return this.http.delete('https://http-ng8-lab-a9882.firebaseio.com/posts.json',
+      {
+        observe: 'events'
+      })
+      .pipe(tap(event => {
+        console.log(event);
+        if (event.type === HttpEventType.Sent) {
+          // ...
+        }
+        if (event.type === HttpEventType.Response) {
+          console.log(event.body);
+        }
+      }));
   }
 
 }
