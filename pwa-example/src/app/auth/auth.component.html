@@ -9,8 +9,11 @@
         <label for="password">Password</label>
         <input type="password" id="password" class="form-control" />
       </div>
-      <button class="btn btn-primary">Sign Up</button> |
-      <button class="btn btn-primary">Switch to Login</button>
+      <button class="btn btn-primary" type="submit">{{ isLoginMode ? 'Login' : 'Sign Up' }}</button>
+      |
+      <button class="btn btn-primary" (click)="onSwtichMode()" type="button">Switch to
+        {{ isLoginMode ? 'SignUp' : 'Login' }} Login
+      </button>
     </form>
   </div>
 </div>
