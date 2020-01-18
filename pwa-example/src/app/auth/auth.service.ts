@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { EmailValidator } from '@angular/forms';
-import { MyKey } from '../config;';
+import { config } from '../config';
 
 interface AuthResponseData {
   kind: string;
@@ -16,10 +16,10 @@ interface AuthResponseData {
   providedIn: 'root'
 })
 export class AuthService {
-
+  myKey = config.myKey;
   constructor(private http: HttpClient) { }
 
-  signUp(email: string, password: string) {
+  signup(email: string, password: string) {
     return this.http.post<AuthResponseData>(
       'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' + this.myKey,
       {
