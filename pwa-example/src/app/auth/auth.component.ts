@@ -33,6 +33,7 @@ export class AuthComponent implements OnInit {
 
     if (this.isLoginMode) {
       // ...
+      console.log('log in mode selected but not ready in service yet');
     } else {
 
       this.authService.signup(email, password).subscribe(
