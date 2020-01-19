@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 })
 export class AuthComponent implements OnInit {
   isLoginMode = true;
+  isLoading = false;
 
   constructor(private authService: AuthService) { }
 
@@ -25,6 +26,8 @@ export class AuthComponent implements OnInit {
     console.log(form.value);
     const email = form.value.email;
     const password = form.value.password;
+
+    this.isLoginMode = true;
 
     if (this.isLoginMode) {
       // ...
