@@ -58,6 +58,7 @@ Thumbs.db
 
 # Don't check in secret files
 *secret.js
+*config.ts
 
 # rollup-test output
 /modules/rollup-test/dist/
