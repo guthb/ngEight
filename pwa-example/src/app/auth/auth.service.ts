@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { EmailValidator } from '@angular/forms';
 
 
 interface AuthResponseData {
@@ -12,9 +11,7 @@ interface AuthResponseData {
   localId: string;
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   // myKey = config.myKey;
   constructor(private http: HttpClient) { }
@@ -25,8 +22,10 @@ export class AuthService {
       // https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=[API_KEY]
 
       {
-        email,
-        password,
+        // tslint:disable-next-line: object-literal-shorthand
+        email: email,
+        // tslint:disable-next-line: object-literal-shorthand
+        password: password,
         returnSecureToken: true
       }
     );
