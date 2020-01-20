@@ -35,19 +35,17 @@ export class AuthComponent implements OnInit {
       // ...
       console.log('login mode selected but not ready in service yet');
     } else {
-      console.log('Signup mode selected but not ready in service yet');
+      console.log('Signup mode selected');
       this.authService.signup(email, password).subscribe(
         responseData => {
           console.log('response data', responseData);
           this.isLoading = false;
         },
-        error => {
-          console.log(error);
-          this.error = 'An Error Occured';
-          // this.error = errorMessage;
+        errorMessage => {
+          console.log(errorMessage);
+          this.error = errorMessage;
           this.isLoading = false;
         }
-
       );
 
     }
