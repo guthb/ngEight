@@ -33,7 +33,7 @@ export class AuthService {
       if (!errorResponse.error || !errorResponse.error.error) {
         return throwError(errorMessage);
       }
-      switch (errorResponse.error.message) {
+      switch (errorResponse.error.error.message) {
         case 'EMAIL_EXISTS': {
           errorMessage = 'this email exists already';
           break;
