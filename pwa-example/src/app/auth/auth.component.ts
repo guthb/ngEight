@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { AuthService } from './auth.service';
 
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -29,13 +29,13 @@ export class AuthComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
 
-    this.isLoginMode = true;
+    this.isLoading = true;
 
     if (this.isLoginMode) {
       // ...
-      console.log('log in mode selected but not ready in service yet');
+      console.log('login mode selected but not ready in service yet');
     } else {
-
+      console.log('Signup mode selected but not ready in service yet');
       this.authService.signup(email, password).subscribe(
         responseData => {
           console.log('response data', responseData);
@@ -44,7 +44,8 @@ export class AuthComponent implements OnInit {
         error => {
           console.log(error);
           this.error = 'An Error Occured';
-          this.isLoginMode = false;
+          // this.error = errorMessage;
+          this.isLoading = false;
         }
 
       );
