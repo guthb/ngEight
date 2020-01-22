@@ -1,21 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit } from "@angular/core";
+import { NgForm } from "@angular/forms";
 
-import { AuthService } from './auth.service';
+import { AuthService, AuthResponseData } from "./auth.service";
+import { Observable } from "rxjs";
 
 @Component({
-  selector: 'app-auth',
-  templateUrl: './auth.component.html',
-  styleUrls: ['./auth.component.css']
+  selector: "app-auth",
+  templateUrl: "./auth.component.html",
+  styleUrls: ["./auth.component.css"]
 })
 export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -29,26 +30,26 @@ export class AuthComponent implements OnInit {
     const email = form.value.email;
     const password = form.value.password;
 
+    let authObservable: Observable<AuthResponseData>;
+
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      // ...
-      console.log('login mode selected but not ready in service yet');
+      authObservable = this.authService.login(email, password);
     } else {
-      console.log('Signup mode selected');
-      this.authService.signup(email, password).subscribe(
-        responseData => {
-          console.log('response data', responseData);
-          this.isLoading = false;
-        },
-        errorMessage => {
-          console.log(errorMessage);
-          this.error = errorMessage;
-          this.isLoading = false;
-        }
-      );
-
+      authObservable = this.authService.signup(email, password);
     }
+    authObservable.subscribe(
+      ResponseData => {
+        console.log(ResponseData);
+        this.isLoading = false;
+      },
+      errorMessage => {
+        console.log(errorMessage);
+        this.error = errorMessage;
+        this.isLoading = false;
+      }
+    );
     form.reset();
   }
 }
