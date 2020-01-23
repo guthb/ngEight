@@ -29,8 +29,7 @@ export class AuthService {
           password: password,
           returnSecureToken: true
         }
-      )
-      .pipe(catchError(this.handleError));
+      ).pipe(catchError(this.handleError));
   }
 
   login(email: string, password: string) {
@@ -60,9 +59,24 @@ export class AuthService {
         errorMessage = "Password sign-in is disabled for this project";
         break;
       }
-      case "EMAIL_EXISTS": {
+      case "TOO_MANY_ATTEMPTS_TRY_LATER": {
         errorMessage =
           "All requests blocked from this device due to unusual activity. Try again later";
+        break;
+      }
+      case "EMAIL_NOT_FOUND": {
+        errorMessage =
+          "There is no user record corresponding to this identifier. The user may have been deleted.";
+        break;
+      }
+      case "INVALID_PASSWORD": {
+        errorMessage =
+          "The password is invalid or the user does not have a password.";
+        break;
+      }
+      case "USER_DISABLED": {
+        errorMessage =
+          "The user account has been disabled by an administrator.";
         break;
       }
       default: {
@@ -70,8 +84,7 @@ export class AuthService {
         break;
       }
     }
-
-
+    return throwError(errorMessage);
   }
 
 }
