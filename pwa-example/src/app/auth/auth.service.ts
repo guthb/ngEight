@@ -1,7 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { catchError } from "rxjs/operators";
-import { throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { throwError, Subject } from "rxjs";
+import { Config } from '../config';
+import { User } from './user.model';
+
+//const config = require('../config.ts') as Config;
 
 export interface AuthResponseData {
   kind: string;
@@ -16,12 +20,17 @@ export interface AuthResponseData {
 @Injectable({ providedIn: "root" })
 export class AuthService {
   // myKey = config.myKey;
+  user = new Subject<User>();
+
+
   constructor(private http: HttpClient) { }
+
+  //configUrl = config.urlAndApiKey
 
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'enter url',
+        'configUrl',
         {
           // tslint:disable-next-line: object-literal-shorthand
           email: email,
@@ -29,12 +38,15 @@ export class AuthService {
           password: password,
           returnSecureToken: true
         }
-      ).pipe(catchError(this.handleError));
+      ).pipe(catchError(this.handleError), tap(responseData => {
+        this.handleAuth(responseData.email, responseData.localId, responseData.refreshToken, +responseData.expiresIn);
+      })
+      );
   }
 
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(
-      'enter url',
+      'configUrl',
       {
         // tslint:disable-next-line: object-literal-shorthand
         email: email,
@@ -42,7 +54,17 @@ export class AuthService {
         password: password,
         returnSecureToken: true
       }
-    ).pipe(catchError(this.handleError));
+    ).pipe(catchError(this.handleError),
+      tap(responseData => {
+        this.handleAuth(responseData.email, responseData.localId, responseData.refreshToken, +responseData.expiresIn);
+      }));
+  }
+
+  private handleAuth(email: string, userId: string, token: string, expiresIn: number) {
+
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(email, userId, token, expirationDate);
+    this.user.next(user)
   }
 
   private handleError(errorResponse: HttpErrorResponse) {

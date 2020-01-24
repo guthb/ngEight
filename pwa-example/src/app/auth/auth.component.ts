@@ -14,9 +14,9 @@ export class AuthComponent implements OnInit {
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
