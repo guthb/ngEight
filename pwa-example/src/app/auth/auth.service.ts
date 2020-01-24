@@ -20,7 +20,10 @@ export interface AuthResponseData {
 @Injectable({ providedIn: "root" })
 export class AuthService {
   // myKey = config.myKey;
+  url = new Config
   user = new Subject<User>();
+
+
 
 
   constructor(private http: HttpClient) { }
@@ -30,7 +33,7 @@ export class AuthService {
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'configUrl',
+        'signUp URL',
         {
           // tslint:disable-next-line: object-literal-shorthand
           email: email,
@@ -46,7 +49,7 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(
-      'configUrl',
+      'login Url',
       {
         // tslint:disable-next-line: object-literal-shorthand
         email: email,
