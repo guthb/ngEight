@@ -26,26 +26,22 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.authService.user.pipe(take(1), exhaustMap(user => {
-      return this.http
-        .get<Recipe[]>('https://http-ng8-lab-a9882.firebaseio.com/recipes.json',
-          {
-            params: new HttpParams().set('auth', user.token)
-          }
-        );
-    }),
-      map(recipes => {
-        // rxjs operator
-        return recipes.map(recipe => {
-          return {
-            ...recipe,
-            ingredients: recipe.ingredients ? recipe.ingredients : []
-          };
-        }); // js array method
-      }),
-      tap(recipes => {
-        this.recipesService.setRecipes(recipes);
-      })
-    );
+
+    return this.http
+      .get<Recipe[]>('https://http-ng8-lab-a9882.firebaseio.com/recipes.json',
+      ).pipe(
+        map(recipes => {
+          // rxjs operator
+          return recipes.map(recipe => {
+            return {
+              ...recipe,
+              ingredients: recipe.ingredients ? recipe.ingredients : []
+            };
+          }); // js array method
+        }),
+        tap(recipes => {
+          this.recipesService.setRecipes(recipes);
+        })
+      );
   }
 }
