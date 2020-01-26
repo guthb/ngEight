@@ -9,7 +9,7 @@ import { User } from './user.model';
 
 export interface AuthResponseData {
   kind: string;
-  idtoken: string;
+  idToken: string;
   email: string;
   refreshToken: string;
   expiresIn: string;
@@ -32,9 +32,7 @@ export class AuthService {
       .post<AuthResponseData>(
         'signUp URL',
         {
-          // tslint:disable-next-line: object-literal-shorthand
           email: email,
-          // tslint:disable-next-line: object-literal-shorthand
           password: password,
           returnSecureToken: true
         }
@@ -48,20 +46,17 @@ export class AuthService {
     return this.http.post<AuthResponseData>(
       'login Url',
       {
-        // tslint:disable-next-line: object-literal-shorthand
         email: email,
-        // tslint:disable-next-line: object-literal-shorthand
         password: password,
         returnSecureToken: true
       }
     ).pipe(catchError(this.handleError),
       tap(responseData => {
-        this.handleAuth(responseData.email, responseData.localId, responseData.refreshToken, +responseData.expiresIn);
+        this.handleAuth(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
       }));
   }
 
   private handleAuth(email: string, userId: string, token: string, expiresIn: number) {
-
     const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
     const user = new User(email, userId, token, expirationDate);
     this.user.next(user)
