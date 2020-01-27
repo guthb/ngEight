@@ -4,6 +4,7 @@ import { catchError, tap } from "rxjs/operators";
 import { throwError, Subject, BehaviorSubject } from "rxjs";
 import { Config } from '../config';
 import { User } from './user.model';
+import { Router } from '@angular/router';
 
 //const config = require('../config.ts') as Config;
 
@@ -23,7 +24,7 @@ export class AuthService {
   url = new Config
   user = new BehaviorSubject<User>(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   //configUrl = config.urlAndApiKey
 
@@ -60,6 +61,7 @@ export class AuthService {
 
   logout() {
     this.user.next(null);
+    this.router.navigate(['/auth'])
   }
 
   private handleAuth(email: string, userId: string, token: string, expiresIn: number) {
