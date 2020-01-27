@@ -31,6 +31,7 @@ export class AuthService {
     return this.http
       .post<AuthResponseData>(
         'signUp URL',
+
         {
           email: email,
           password: password,
@@ -45,6 +46,7 @@ export class AuthService {
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(
       'login Url',
+
       {
         email: email,
         password: password,
@@ -54,6 +56,10 @@ export class AuthService {
       tap(responseData => {
         this.handleAuth(responseData.email, responseData.localId, responseData.idToken, +responseData.expiresIn);
       }));
+  }
+
+  logout() {
+    this.user.next(null);
   }
 
   private handleAuth(email: string, userId: string, token: string, expiresIn: number) {
