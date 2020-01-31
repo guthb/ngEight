@@ -28,6 +28,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onFechData() {
     this.dataStorageService.fetchRecipes().subscribe();
   }
+
+  onLogout() {
+    this.authService.logout();
+  }
+
+
   ngOnDestroy() {
     //Called once, before the instance is destroyed.
     //Add 'implements OnDestroy' to the class.
