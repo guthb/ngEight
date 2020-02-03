@@ -16,7 +16,7 @@ export class AuthComponent implements OnInit {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
-  @ViewChild(appPlaceholder) alertHost: PlaceholderDirective;
+  @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
   constructor(private authService: AuthService, private router: Router, private componentFactoryResolver: ComponentFactoryResolver) { }
 
