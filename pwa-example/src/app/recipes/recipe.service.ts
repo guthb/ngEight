@@ -40,7 +40,7 @@ export class RecipeService {
 
   getRecipe(index: number) {
     return this.recipes[index];
-    this.recipesChanged.next(this.recipes.slice());
+    //this.recipesChanged.next(this.recipes.slice());
   }
 
   addIngredientsToShoppingList(ingredients: Ingredient[]) {

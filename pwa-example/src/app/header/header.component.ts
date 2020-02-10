@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   onSaveData() {
-    this.dataStorageService.storeReciepes();
+    this.dataStorageService.storeRecipes();
   }
 
   onFechData() {

@@ -16,7 +16,7 @@ export class DataStorageService {
     private authService: AuthService
   ) { }
 
-  storeReciepes() {
+  storeRecipes() {
     const recipes = this.recipesService.getRecipes();
     this.http
       .put('https://http-ng8-lab-a9882.firebaseio.com/recipes.json', recipes)
