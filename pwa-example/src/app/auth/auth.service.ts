@@ -5,7 +5,8 @@ import { throwError, Subject, BehaviorSubject } from "rxjs";
 import { Config } from '../config';
 import { User } from './user.model';
 import { Router } from '@angular/router';
-import { DataStorageService } from '../shared/data-storage.service';
+import { environment } from '../../environments/environment'
+
 
 //const config = require('../config.ts') as Config;
 
@@ -21,19 +22,20 @@ export interface AuthResponseData {
 
 @Injectable({ providedIn: "root" })
 export class AuthService {
-  // myKey = config.myKey;
+
   url = new Config
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  //configUrl = config.urlAndApiKey
+
 
   signup(email: string, password: string) {
     return this.http
       .post<AuthResponseData>(
-        'signUp URL',
+        //'signUp URL',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUP?key=' + environment.firebaseApiKey,
         {
           email: email,
           password: password,
@@ -47,8 +49,8 @@ export class AuthService {
 
   login(email: string, password: string) {
     return this.http.post<AuthResponseData>(
-      'login Url',
-
+      //'login Url',
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key + environment.firebaseApiKey,',
       {
         email: email,
         password: password,
