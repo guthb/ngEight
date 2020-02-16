@@ -23,6 +23,25 @@ export function shoppingListReducer(
         ...state,
         ingredients: [...state.ingredients, ...action.payload]
       };
+    case ShoppingListActions.UPDATE_INGREDIENT:
+      const ingredient = state.ingredients[action.payload.index];
+      const updateIngredient = {
+        ...ingredient, //old data
+        ...action.payload.ingredient  //overwrite only what changes
+      };
+
+      const updateIngredients = [...state.ingredients]
+      updateIngredients[action.payload.index] = updateIngredient;
+
+      return {
+        ...state,
+        ingredients: updateIngredients
+
+      };
+    case ShoppingListActions.DELETE_INGREDIENT:
+      return {
+
+      };
     default:
       return state;
   }
