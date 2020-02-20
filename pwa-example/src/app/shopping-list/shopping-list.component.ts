@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { Ingredient } from '../shared/ingredient.model'
-import { ShoppingListService } from './shopping-list.service';
 import { Subscription, Observable } from 'rxjs';
 import { LoggingService } from '../logging.service';
 import { Store } from '@ngrx/store';
 import * as fromShopingList from './shopping-list.reducer'
 import * as  ShoppingListActions from './shopping-list.actions';
+//import { ShoppingListService } from './removed-shopping-list.service';
 
 
 @Component({
@@ -19,7 +19,7 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
   private igChangedSub: Subscription;
 
   constructor(
-    private shoppinglistService: ShoppingListService,
+    //private shoppinglistService: ShoppingListService,
     private logginService: LoggingService,
     //private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>) { }
     private store: Store<fromShopingList.AppState>) { }
