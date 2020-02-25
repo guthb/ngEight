@@ -10,6 +10,7 @@ const intialState: State = {
 };
 
 export function authReducer(state = intialState, action: AuthActions.AuthActions) {
+  console.log(state);
   switch (action.type) {
 
     case AuthActions.LOGIN:

@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
 
-
-export const LOGIN = 'LOGIN';
-export const LOGOUT = 'LOGOUT';
+export const LOGIN = '[Auth] Login'; //make sure the actions are unique across the app add prefixing!
+export const LOGOUT = '[Auth] Logout';
 
 export class Login implements Action {
   readonly type = LOGIN;
