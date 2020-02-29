@@ -3,6 +3,7 @@ import * as AuthActions from './auth.actions';
 
 
 
+
 export interface State {
   user: User
   authError: string
@@ -38,6 +39,7 @@ export function authReducer(state = intialState, action: AuthActions.AuthActions
         user: null
       };
     case AuthActions.LOGIN_START:
+    case AuthActions.SIGNUP_START:
       return {
         ...state,
         authError: null,
@@ -50,6 +52,11 @@ export function authReducer(state = intialState, action: AuthActions.AuthActions
         authError: action.payload,
         loading: false
       };
+    case AuthActions.HANDLE_ERROR:
+      return {
+        ...state,
+        authError: null
+      }
     default:
       return state;
   }

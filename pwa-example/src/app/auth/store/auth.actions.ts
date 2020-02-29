@@ -4,6 +4,7 @@ export const LOGIN_START = '[Auth] Login Start';
 export const AUTHENTICATE_SUCCESS = '[Auth] Login'; //make sure the actions are unique across the app add prefixing!
 export const AUTHENTICATE_FAIL = '[Auth] Login Fail';
 export const SIGNUP_START = '[Auth] Signup Start';
+export const HANDLE_ERROR = '[Auth] Handle Error'
 export const LOGOUT = '[Auth] Logout';
 
 export class AuthenticateSuccess implements Action {
@@ -35,6 +36,16 @@ export class SignupStart implements Action {
   constructor(public payload: { email: string; password: string }) { }
 }
 
+export class HandleError implements Action {
+  readonly type = HANDLE_ERROR;
+}
 
 
-export type AuthActions = AuthenticateSuccess | Logout | LoginStart | AuthenticateFail | SignupStart;
+
+export type AuthActions =
+  | AuthenticateSuccess
+  | Logout
+  | LoginStart
+  | AuthenticateFail
+  | SignupStart
+  | HandleError;
