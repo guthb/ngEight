@@ -15,13 +15,14 @@ import * as AuthActions from '../auth/store/auth.actions'
   templateUrl: "./auth.component.html",
   styleUrls: ["./auth.component.css"]
 })
-export class AuthComponent implements OnDestroy {
+export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
   @ViewChild(PlaceholderDirective, { static: false }) alertHost: PlaceholderDirective;
 
-  private closeSubscription: Subscription
+  private closeSubscription: Subscription;
+  private storeSubscription: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -30,7 +31,15 @@ export class AuthComponent implements OnDestroy {
     private store: Store<fromApp.AppState>
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.storeSubscription = this.store.select('auth').subscribe(authState => {
+      this.isLoading = authState.loading;
+      this.error = authState.authError;
+      if (this.error) {
+        this.showErrorAlert(this.error);
+      }
+    })
+  }
 
   onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
@@ -44,9 +53,9 @@ export class AuthComponent implements OnDestroy {
     const email = form.value.email;
     const password = form.value.password;
 
-    let authObservable: Observable<AuthResponseData>;
+    //let authObservable: Observable<AuthResponseData>;
 
-    this.isLoading = true;
+    //this.isLoading = true;
 
     if (this.isLoginMode) {
       //authObservable = this.authService.login(email, password);
@@ -57,33 +66,45 @@ export class AuthComponent implements OnDestroy {
         })
       );
     } else {
-      authObservable = this.authService.signup(email, password);
+      //authObservable = this.authService.signup(email, password);
+      this.store.dispatch(new AuthActions.SignupStart({
+        email: email,
+        password: password
+      }))
     }
 
-    authObservable.subscribe(
-      ResponseData => {
-        console.log(ResponseData);
-        this.isLoading = false;
-        this.router.navigate(['/recipes'])
-      },
-      errorMessage => {
-        console.log(errorMessage);
-        this.error = errorMessage;
-        this.showErrorAlert(errorMessage);
-        this.isLoading = false;
-      }
-    );
+    this.store.select('auth').subscribe(authState => {
+
+    })
+    // authObservable.subscribe(
+    //   ResponseData => {
+    //     console.log(ResponseData);
+    //     this.isLoading = false;
+    //     this.router.navigate(['/recipes'])
+    //   },
+    //   errorMessage => {
+    //     console.log(errorMessage);
+    //     this.error = errorMessage;
+    //     this.showErrorAlert(errorMessage);
+    //     this.isLoading = false;
+    //   }
+    // );
+
     form.reset();
   }
 
   onHandleError() {
-    this.error = null;
+    //this.error = null;
+    this.store.dispatch(new AuthActions.HandleError())
   }
 
 
   ngOnDestroy() {
     if (this.closeSubscription) {
       this.closeSubscription.unsubscribe();
+    }
+    if (this.storeSubscription) {
+      this.storeSubscription.unsubscribe();
     }
   }
 
