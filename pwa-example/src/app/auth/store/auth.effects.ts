@@ -8,6 +8,7 @@ import * as AuthActions from './auth.actions';
 import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { User } from '../user.model';
+import { AuthService } from '../auth.service';
 
 export interface AuthResponseData {
   kind: string;
@@ -92,6 +93,9 @@ export class AuthEffects {
             returnSecureToken: true
           }
         ).pipe(
+          tap(responseData => {
+            this.authService.setLogoutTimer(+responseData.expiresIn)
+          }),
           map(responseData => {
             return handleAuthentication(
               +responseData.expiresIn,
@@ -137,9 +141,11 @@ export class AuthEffects {
 
   @Effect({ dispatch: false })
   //authSucess = this.actions$.pipe(ofType(AuthActions.AUTHENTICATE_SUCCESS), tap(() => {
-  authRedirect = this.actions$.pipe(ofType(AuthActions.AUTHENTICATE_SUCCESS, AuthActions.LOGOUT), tap(() => {
-    this.router.navigate(['/']);
-  })
+  authRedirect = this.actions$.pipe(
+    ofType(AuthActions.AUTHENTICATE_SUCCESS),
+    tap(() => {
+      this.router.navigate(['/']);
+    })
   );
 
   @Effect()
@@ -159,6 +165,10 @@ export class AuthEffects {
 
       if (loadedUser.token) {
         //this.user.next(loadedUser);
+        const expirationDuration =
+          new Date(userData._tokenExpirationDate).getTime() -
+          new Date().getTime()
+        this.authService.setLogoutTimer(expirationDuration)
         return new AuthActions.AuthenticateSuccess({
           email: loadedUser.email,
           userId: loadedUser.id,
@@ -172,12 +182,20 @@ export class AuthEffects {
     })
   );
 
-  authLogout = this.actions$.pipe(ofType(AuthActions.LOGOUT), tap(() => {
-    localStorage.removeItem('userData');
-  }))
+  @Effect({ dispatch: false })
+  authLogout = this.actions$.pipe(
+    ofType(AuthActions.LOGOUT), tap(() => {
+      this.authService.clearLogoutTimer();
+      localStorage.removeItem('userData');
+      this.router.navigate(['/auth']);
+    })
+  );
 
 
   //$ indcates this is an observable
-  constructor(private actions$: Actions, private http: HttpClient, private router: Router) { }
+  constructor(private actions$: Actions,
+    private http: HttpClient,
+    private router: Router,
+    private authService: AuthService) { }
 
 }
