@@ -129,7 +129,7 @@ export class AuthEffects {
         }
       ).pipe(
         tap(responseData => {
-          this.authService.setLogoutTimer(+responseData.expiresIn)
+          this.authService.setLogoutTimer(+responseData.expiresIn * 1000)
         }),
         map(responseData => {
           return handleAuthentication(
