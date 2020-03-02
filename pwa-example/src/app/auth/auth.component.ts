@@ -2,9 +2,9 @@ import { Component, OnInit, ComponentFactoryResolver, ViewChild, OnDestroy } fro
 import { NgForm } from "@angular/forms";
 import { Store } from '@ngrx/store';
 
-import { AuthService, AuthResponseData } from "./auth.service";
-import { Observable, Subscription } from "rxjs";
-import { Router } from '@angular/router';
+
+import { Subscription } from "rxjs";
+
 import { AlertComponent } from '../shared/alert/alert.component'
 import { PlaceholderDirective } from '../shared/placeholder/placeholder.directive'
 import * as fromApp from '../store/app.reducer'
@@ -25,8 +25,6 @@ export class AuthComponent implements OnInit, OnDestroy {
   private storeSubscription: Subscription;
 
   constructor(
-    private authService: AuthService,
-    private router: Router,
     private componentFactoryResolver: ComponentFactoryResolver,
     private store: Store<fromApp.AppState>
   ) { }
