@@ -20,7 +20,11 @@ export interface AuthResponseData {
   registerd?: boolean;
 }
 
-const handleAuthentication = (expiresIn: number, email: string, userId: string, token: string) => {
+const handleAuthentication = (
+  expiresIn: number,
+  email: string,
+  userId: string,
+  token: string) => {
   const expirationDate = new Date(
     new Date().getTime() + expiresIn * 1000
   );
@@ -94,7 +98,7 @@ export class AuthEffects {
           }
         ).pipe(
           tap(responseData => {
-            this.authService.setLogoutTimer(+responseData.expiresIn)
+            this.authService.setLogoutTimer(+responseData.expiresIn * 1000)
           }),
           map(responseData => {
             return handleAuthentication(
@@ -124,6 +128,9 @@ export class AuthEffects {
           returnSecureToken: true
         }
       ).pipe(
+        tap(responseData => {
+          this.authService.setLogoutTimer(+responseData.expiresIn * 1000)
+        }),
         map(responseData => {
           return handleAuthentication(
             +responseData.expiresIn,
