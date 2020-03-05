@@ -3,10 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Actions, ofType, Effect, } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 import * as AuthActions from './auth.actions';
 import { environment } from '../../../environments/environment';
-import { Router } from '@angular/router';
 import { User } from '../user.model';
 import { AuthService } from '../auth.service';
 
