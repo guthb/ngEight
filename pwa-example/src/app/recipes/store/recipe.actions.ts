@@ -33,9 +33,4 @@ export class DeleteRecipe implements Action {
   constructor(public payload: number) { }
 }
 
-export type RecipesActions =
-  SetRecipes |
-  FetchRecipes |
-  AddRecipe |
-  UpdateRecipes |
-  DeleteRecipe;
+export type RecipesActions = SetRecipes | FetchRecipes | AddRecipe | UpdateRecipes | DeleteRecipe;

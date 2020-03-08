@@ -13,7 +13,8 @@ const intitilaState: State = {
 
 export function recipeReducer(
   state = intitilaState,
-  action: RecipesActions.RecipesActions) {
+  action: RecipesActions.RecipesActions
+) {
   switch (action.type) {
     case RecipesActions.SET_RECIPES:
       return {
@@ -24,7 +25,7 @@ export function recipeReducer(
     case RecipesActions.ADD_RECIPE:
       return {
         ...state,
-        recipes: [...action.payload]
+        recipes: [...state.recipes, action.payload]
       };
 
     case RecipesActions.UPDATE_RECIPES:
