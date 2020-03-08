@@ -7,10 +7,10 @@ import * as RecipesActions from './recipe.actions'
 import { Recipe } from '../recipe.model';
 
 @Injectable()
-
 export class RecipeEffects {
   @Effect()
-  fetchRecipes = this.actions$.pipe(ofType(RecipesActions.FETCH_RECIPES),
+  fetchRecipes = this.actions$.pipe(
+    ofType(RecipesActions.FETCH_RECIPES),
     switchMap(() => {
       return this.http
         .get<Recipe[]>('https://http-ng8-lab-a9882.firebaseio.com/recipes.json'
