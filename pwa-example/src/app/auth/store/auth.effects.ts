@@ -155,7 +155,6 @@ export class AuthEffects {
       if (authSucessAction.payload.redirect) {
         this.router.navigate(['/']);
       }
-
     })
   );
 
