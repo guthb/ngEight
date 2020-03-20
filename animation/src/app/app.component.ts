@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, state, style, transition, animate, group } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -44,7 +44,65 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         })),
         animate(500)
       ])
-    ])
+    ]),
+    trigger('list1', [
+      state('in', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-100px)'
+        }),
+        animate(300),
+      ]),
+      transition('* => void', [
+        animate(300, style({
+          transform: 'translateX(100px)',
+          opacity: 0
+        })),
+      ]),
+    ]),
+    trigger('list2', [
+      state('in', style({
+        opacity: 1,
+        transform: 'translateX(0)'
+      })),
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateX(-100px)',
+          offset: 0
+        }),
+        style({
+          transform: 'translateX(-50px)',
+          opacity: 0.5,
+          offset: 0.3
+        }),
+        style({
+          transform: 'translateX(-20px)',
+          opacity: 1,
+          offset: .8
+        }),
+        style({
+          transform: 'translateX(0px)',
+          opacity: 1,
+          offset: 1
+        }),
+      ]),
+      transition('* => void', [
+        group([
+          animate(300, style({
+            color: 'red'
+          })),
+          animate(800, style({
+            transform: 'translateX(100px)',
+            opacity: 0
+          }))
+        ])
+      ])
+    ]),
   ]
 })
 export class AppComponent {
@@ -64,4 +122,18 @@ export class AppComponent {
   onAdd(item) {
     this.list.push(item);
   }
+
+  onDelete(item) {
+    this.list.splice(this.list.lastIndexOf(item), 1);
+  }
+
+  animationStarted() {
+    console.log("start", event)
+  }
+
+  animationEnded() {
+    console.log("end", event)
+  }
+
+
 }
