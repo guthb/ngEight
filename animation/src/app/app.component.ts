@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, state, style, transition, animate, group } from '@angular/animations';
 
 @Component({
   selector: 'app-root',
@@ -47,7 +47,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ]),
     trigger('list1', [
       state('in', style({
-        'opactiy': 1,
+        opacity: 1,
         transform: 'translateX(0)'
       })),
       transition('void => *', [
@@ -58,7 +58,6 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         animate(300),
       ]),
       transition('* => void', [
-
         animate(300, style({
           transform: 'translateX(100px)',
           opacity: 0
@@ -67,7 +66,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
     ]),
     trigger('list2', [
       state('in', style({
-        'opactiy': 1,
+        opacity: 1,
         transform: 'translateX(0)'
       })),
       transition('void => *', [
@@ -93,13 +92,17 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
         }),
       ]),
       transition('* => void', [
-        animate(300, style({
-          transform: 'translateX(100px)',
-          opacity: 0
-        })),
-      ]),
+        group([
+          animate(300, style({
+            color: 'red'
+          })),
+          animate(800, style({
+            transform: 'translateX(100px)',
+            opacity: 0
+          }))
+        ])
+      ])
     ]),
-
   ]
 })
 export class AppComponent {
@@ -123,4 +126,14 @@ export class AppComponent {
   onDelete(item) {
     this.list.splice(this.list.lastIndexOf(item), 1);
   }
+
+  animationStarted() {
+    console.log("start", event)
+  }
+
+  animationEnded() {
+    console.log("end", event)
+  }
+
+
 }
