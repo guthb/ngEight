@@ -14,7 +14,8 @@
           "/*.js"
         ],
         "urls": [
-          "https: //fonts.googleapis.com/css?family=Oswald:300,700"
+          "https: //fonts.googleapis.com/css?family=Oswald:300,700",
+          "https://fonts.gstatic.com/**"
         ]
       }
     },
@@ -36,10 +37,10 @@
       "urls": [
         "https://jsonplaceholder.typicode.com/posts"
       ],
-      "cacheConfig":{
+      "cacheConfig": {
         "maxSize": 5,
         "maxAge": "6h",
-        "timeOut": "10s",
+        "timeout": "10s",
         "strategy": "freshness"
       }
     }
