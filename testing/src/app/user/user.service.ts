@@ -1,5 +1,5 @@
 export class UserService {
-  // user = {
-  //   name: 'Max'
-  // };
+  user = {
+    name: 'Bob'
+  };
 }
