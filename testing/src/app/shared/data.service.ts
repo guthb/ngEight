@@ -3,7 +3,7 @@ export class DataService {
     const resultPromise = new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve('Data');
-      }, 1500);
+      }, 3500);
     });
     return resultPromise;
   }
