@@ -8,11 +8,13 @@
 /bazel-out
 /integration/bazel/bazel-*
 e2e_test.*
-node_modules
+/node_modules
 tools/gulp-tasks/cldr/cldr-data/
 
 # dependencies
 /node_modules
+*/node_modules
+*/dist
 
 # build-analytics
 .build-analytics
@@ -37,6 +39,8 @@ speed-measure-plugin.json
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
+/.vscode
+.vscode
 
 # misc
 /.sass-cache
@@ -47,6 +51,10 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+modules/.settings
+modules/.vscode
+.vimrc
+.nvimrc
 
 # e2e
 /e2e/*.js
@@ -58,6 +66,9 @@ Thumbs.db
 
 # Don't check in secret files
 *secret.js
+*config.ts
+package-lock.json
+
 
 # rollup-test output
 /modules/rollup-test/dist/
